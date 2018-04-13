@@ -1,0 +1,33 @@
+<web-app
+
+	id="WebApp_ID" version="2.5">
+
+	<display-name>altan</display-name>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:/service.altan.xml,
+			classpath:/ws-cxf-altan.xml
+        </param-value>
+	</context-param>
+
+	<!-- Este listener se encarga de inicializar todo el contenedor de Spring 
+		y mantener una variable en el ServletContext que apunta a dicho contenedor -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+    <!-- Agregamos el Servlet que se encarga de levantar CXF -->
+    <servlet>
+        <servlet-name>CXFServlet</servlet-name>
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+	<!-- Mapeamos las entradas a dicho Servlet -->
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/altan/*</url-pattern>
+	</servlet-mapping>
+</web-app>
