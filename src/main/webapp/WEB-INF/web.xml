@@ -2,13 +2,13 @@
 
 	id="WebApp_ID" version="2.5">
 
-	<display-name>altan</display-name>
+	<display-name>ws-cxf</display-name>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:/service.altan.xml,
-			classpath:/ws-cxf-altan.xml
+			classpath:/ws-cxf.xml
         </param-value>
 	</context-param>
 
@@ -28,6 +28,6 @@
 	<!-- Mapeamos las entradas a dicho Servlet -->
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
-		<url-pattern>/altan/*</url-pattern>
+		<url-pattern>/test/*</url-pattern>
 	</servlet-mapping>
 </web-app>
