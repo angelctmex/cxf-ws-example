@@ -12,14 +12,12 @@ import javax.jws.WebService
 class HelloImpl implements Hello {
 
 
-    String saluda (){
-         "Ya quedo el ws...."
+    String saluda ( String name ){
+         "Hola ${name}, ya quedo el ws...."
     }
 
     BalanceQueryDto getBalanceQuery( String pan ){
-        return new BalanceQueryDto( code: 1, description: "Consulta realizada con éxito", availableAmount: 22.50 )
-
-
+        new BalanceQueryDto( code: 1, description: "Consulta realizada con éxito", availableAmount: 22.50 )
     }
 
 
