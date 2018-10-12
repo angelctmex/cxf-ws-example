@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "dtds/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     debug="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jakarta.apache.org/log4j/ ">
+
+    <appender name="console_info" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%n%d{yyyy-MM-dd HH:mm:ss} [%-5t] :: %-5p :: %c{1} %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="soap_file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/app_soap_secure_debug.log"/>
+        <param name="DatePattern" value="'_'yyyy-MM-dd"/>
+        <param name="maxFileSize" value="50MB"/>
+        <param name="maxBackupIndex" value="7"/>
+
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%n%d{yyyy-MM-dd HH:mm:ss} [%-5t] :: %-5p :: %c{5} %m%n"/>
+        </layout>
+    </appender>
+
+
+    <!-- Pinta el xml de entrada y de salida -->
+    <category name="org.apache.cxf.interceptor.LoggingInInterceptor">
+        <priority value="INFO"/>
+        <appender-ref ref="soap_file"/>
+        <appender-ref ref="console_info"/>
+    </category>
+
+    <category name="org.apache.cxf.interceptor.LoggingOutInterceptor">
+        <priority value="INFO"/>
+        <appender-ref ref="soap_file"/>
+        <appender-ref ref="console_info"/>
+    </category>
+
+    <category name="com.pegaso.ws">
+        <priority value="DEBUG"/>
+        <appender-ref ref="soap_file"/>
+        <appender-ref ref="console_info"/>
+    </category>
+
+</log4j:configuration>

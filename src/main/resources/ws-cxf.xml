@@ -22,7 +22,7 @@ http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
           parent="abstractLoggingInterceptor">
     </bean>
 
-    <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"
+    <bean id="loggingOutInterceptor" class="com.pegaso.ws.interceptor.LoggingOutInterceptor"
         parent="abstractLoggingInterceptor">
     </bean>
 
