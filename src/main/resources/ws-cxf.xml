@@ -26,22 +26,25 @@ http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
         parent="abstractLoggingInterceptor">
     </bean>
 
-    <!-- add the logging interceptors to the CXF bus -->
-    <cxf:bus>
-        <cxf:inInterceptors>
-            <ref bean="loggingInInterceptor" />
-        </cxf:inInterceptors>
-        <cxf:inFaultInterceptors>
-            <ref bean="loggingInInterceptor" />
-        </cxf:inFaultInterceptors>
-        <cxf:outInterceptors>
-            <ref bean="loggingOutInterceptor" />
-        </cxf:outInterceptors>
-        <cxf:outFaultInterceptors>
-            <ref bean="loggingOutInterceptor" />
-        </cxf:outFaultInterceptors>
-    </cxf:bus>
-	<!-- Endpoint Altan-->
+    <bean id="headerOutInterceptor" class="com.pegaso.ws.interceptor.UUIDHeaderInterceptor">
+    </bean>
+
+
+    <bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+        <property name="outInterceptors">
+            <list>
+                <ref bean="loggingOutInterceptor"/>
+                <ref bean="headerOutInterceptor"/>
+            </list>
+        </property>
+        <property name="inInterceptors">
+            <list>
+                <ref bean="loggingInInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Endpoint Altan-->
 	<jaxws:endpoint id="altanWS"
                     implementorClass="com.pegaso.ws.endpoint.impl.HelloImpl" implementor="#helloEndpoint"
                     address="/cxf">

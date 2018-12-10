@@ -12,7 +12,7 @@ interface Hello {
     @WebMethod
     String saluda( @WebParam(name = "name") String name )
 
-    @WebMethod
-    BalanceQueryDto getBalanceQuery(@WebParam(name = "pan") String pan )
+    //@WebMethod
+    //BalanceQueryDto getBalanceQuery(@WebParam(name = "pan") String pan )
 
 }
