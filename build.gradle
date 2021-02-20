@@ -5,9 +5,11 @@ apply plugin: 'groovy'
 apply plugin: 'war'
 apply plugin: 'idea'
 
-repositories {
-    mavenCentral()
-}
+    repositories {  
+        maven {  
+            url 'http://jcenter.bintray.com'  
+        }  
+    }  
 
 buildscript {
     repositories {
@@ -18,8 +20,6 @@ buildscript {
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.5'
     }
 }
-
-apply plugin: 'com.bmuschko.tomcat'
 
 dependencies {
 
@@ -34,13 +34,10 @@ dependencies {
             "org.apache.cxf:cxf-rt-transports-http:2.5.1",
             "org.apache.cxf:cxf-rt-transports-http-jetty:2.5.1",
             "org.apache.cxf:cxf-common-utilities:2.5.1",
-            "org.apache.cxf:cxf-rt-ws-security:2.5.1"
+            "org.apache.cxf:cxf-rt-ws-security:2.5.1",
+            "org.bouncycastle:bcprov-jdk16:1.46"
 
-    def tomcatVersion = '8.0.42'
-    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
-
+    
     compile 'org.codehaus.groovy:groovy-all:2.4.10'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
@@ -49,7 +46,4 @@ dependencies {
 
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.8'
-}
 

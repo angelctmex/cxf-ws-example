@@ -9,50 +9,62 @@ http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
 ">
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<!-- abstractLoggingInterceptor that will enable pretty printing of messages -->
-    <bean id="abstractLoggingInterceptor" class="org.apache.cxf.interceptor.AbstractLoggingInterceptor" abstract="true">
-        <property name="prettyLogging" value="true" />
+    <!-- Enable message logging using the CXF logging feature -->
+    <cxf:bus>
+        <cxf:features>
+            <cxf:logging />
+        </cxf:features>
+    </cxf:bus>
+
+    <bean id="logInBound" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+    <bean id="logOutBound" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+
+    <!-- El mensaje se firma y se encripta -->
+    <bean id="inbound-security" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="action" 				value="Signature Encrypt" />
+                <entry key="decryptionPropFile" 	value="test-cert-syc.properties" />
+                <entry key="signaturePropFile" 		value="test-cert-bam.properties" />
+                <entry key="passwordCallbackClass"  value="com.pegaso.ws.secure.ServerPasswordCallback" />
+            </map>
+        </constructor-arg>
     </bean>
-	
 
-	<!-- logging interceptors that will log all received/sent messages -->
-    <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"
-          parent="abstractLoggingInterceptor">
-    </bean>
-
-    <bean id="loggingOutInterceptor" class="com.pegaso.ws.interceptor.LoggingOutInterceptor"
-        parent="abstractLoggingInterceptor">
-    </bean>
-
-    <bean id="headerOutInterceptor" class="com.pegaso.ws.interceptor.UUIDHeaderInterceptor">
-    </bean>
-
-
-    <bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
-        <property name="outInterceptors">
-            <list>
-                <ref bean="loggingOutInterceptor"/>
-                <ref bean="headerOutInterceptor"/>
-            </list>
-        </property>
-        <property name="inInterceptors">
-            <list>
-                <ref bean="loggingInInterceptor"/>
-            </list>
-        </property>
+    <!-- El mensaje se firma y se encripta -->
+    <bean id="outbound-security" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="action"                  value="Signature Encrypt" />
+                <entry key="user"                    value="syc" />
+                <entry key="signatureUser"           value="syc" />
+                <entry key="encryptionUser"          value="bam" />
+                <entry key="encryptionPropFile"      value="test-cert-bam.properties" />
+                <entry key="signaturePropFile"       value="test-cert-syc.properties" />
+                <entry key="encryptionKeyIdentifier" value="DirectReference" />
+                <entry key="signatureKeyIdentifier"  value="DirectReference" />
+                <entry key="passwordCallbackClass"   value="com.pegaso.ws.secure.ServerPasswordCallback" />
+                <entry key="signatureParts"          value="{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+                <entry key="encryptionParts"         value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+                <entry key="encryptionSymAlgorithm"  value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
+            </map>
+        </constructor-arg>
     </bean>
 
     <!-- Endpoint Altan-->
-	<jaxws:endpoint id="altanWS"
-                    implementorClass="com.pegaso.ws.endpoint.impl.HelloImpl" implementor="#helloEndpoint"
-                    address="/cxf">
+	<jaxws:endpoint id="testWS"
+                    implementorClass="com.pegaso.ws.endpoint.impl.CalculadoraImpl" implementor="#calculadoraEndpoint"
+                    address="/calculadora">
 	   <jaxws:inInterceptors>
-			<ref bean="loggingOutInterceptor" />		
+			<ref bean="logInBound" />
+            <!--ref bean="inbound-security" / -->
 		</jaxws:inInterceptors>
 		<jaxws:outInterceptors>
-			<ref bean="loggingOutInterceptor" />
+			<ref bean="logOutBound" />
+            <!--ref bean="outbound-security" / -->
 		</jaxws:outInterceptors> 
 	</jaxws:endpoint>
 

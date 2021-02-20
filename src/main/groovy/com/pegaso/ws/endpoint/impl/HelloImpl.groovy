@@ -17,6 +17,7 @@ class HelloImpl implements Hello {
 
 
     String saluda ( String name ){
+         println ("Hola ${name}, ya quedo el ws....")
          "Hola ${name}, ya quedo el ws...."
     }
 
